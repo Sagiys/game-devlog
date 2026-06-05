@@ -1,0 +1,23 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    container_name: hydephp
+    working_dir: /site
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/site
+      - composer-cache:/home/appuser/.composer/cache
+      - npm-cache:/home/appuser/.npm
+    environment:
+      COMPOSER_MEMORY_LIMIT: -1
+    command: php hyde serve --host=0.0.0.0
+
+volumes:
+  composer-cache:
+  npm-cache:
